@@ -35,7 +35,7 @@ public class FlashCardController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCard);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<FlashCard> update(@PathVariable Long id, @RequestBody FlashCard update) {
         Optional<FlashCard> existingCard = repository.findById(id);
 
@@ -50,5 +50,16 @@ public class FlashCardController {
 
         FlashCard saved = repository.save(flashCard);
         return ResponseEntity.ok(saved);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        if (!repository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        repository.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
