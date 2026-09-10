@@ -1,5 +1,7 @@
 <h1>Flashcards</h1>
 
+<p>Number of cards: {{ flashcards.length }}</p>
+
 @for (flashcard of flashcards; track flashcard.id) {
 <div>
   <h2>{{ flashcard.question }}</h2>

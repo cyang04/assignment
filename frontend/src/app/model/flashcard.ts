@@ -1,9 +1,9 @@
 export interface Flashcard {
   id: number;
+  category: string;
   question: string;
   answer: string;
-  category: string;
   createdAt: string;
-  lastReviewed: string | null;
+  lastAnsweredAt: string | null;
   lastAnsweredStatus: 'CORRECT' | 'PARTIAL' | 'WRONG' | null;
 }
