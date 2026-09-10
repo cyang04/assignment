@@ -34,4 +34,21 @@ public class FlashCardController {
         FlashCard savedCard = repository.save(flashCard);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCard);
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<FlashCard> update(@PathVariable Long id, @RequestBody FlashCard update) {
+        Optional<FlashCard> existingCard = repository.findById(id);
+
+        if (existingCard.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        FlashCard flashCard = existingCard.get();
+        flashCard.setQuestion(update.getQuestion());
+        flashCard.setAnswer(update.getAnswer());
+        flashCard.setCategory(update.getCategory());
+
+        FlashCard saved = repository.save(flashCard);
+        return ResponseEntity.ok(saved);
+    }
 }
