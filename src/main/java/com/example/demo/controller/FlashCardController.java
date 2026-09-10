@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/flashcard")
@@ -19,6 +20,13 @@ public class FlashCardController {
     @GetMapping
     public List<FlashCard> getAll() {
         return repository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<FlashCard> getById(@PathVariable Long id) {
+        Optional<FlashCard> flashCard = repository.findById(id);
+
+        return flashCard.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
