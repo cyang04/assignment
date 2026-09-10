@@ -1,12 +1,26 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Flashcard } from './model/flashcard';
+import { FlashcardService } from './service/flashcard.service';
 
 @Component({
-  imports: [RouterOutlet],
   selector: 'app-root',
-  styleUrl: './app.css',
   templateUrl: './app.html',
+  styleUrl: './app.css'
 })
-export class App {
-  protected readonly title = signal('frontend');
+export class App implements OnInit {
+
+  flashcards: Flashcard[] = [];
+
+  constructor(private flashcardService: FlashcardService) {}
+
+  ngOnInit(): void {
+    this.flashcardService.getFlashcards().subscribe({
+      next: (data) => {
+        this.flashcards = data;
+      },
+      error: (error) => {
+        console.error('Failed to load flashcards', error);
+      }
+    });
+  }
 }
