@@ -12,9 +12,14 @@
         <p class="text-sm text-indigo-500 font-medium uppercase tracking-wide">
           Deck
         </p>
+        <!-- Feature: interpolation + property binding (route param displayed here) -->
         <h1 class="text-2xl font-semibold text-gray-800 capitalize">
           {{ category }}
         </h1>
+        <!-- Feature: conditional rendering driven by a query parameter read in ngOnInit -->
+        @if (source) {
+        <p class="text-xs text-gray-400 mt-0.5">Opened from {{ source }}</p>
+        }
       </div>
 
       @if (!loading() && cards().length > 0) {
@@ -25,6 +30,7 @@
     </div>
   </div>
 
+  <!-- Feature: @if / @else if / @else conditional rendering -->
   @if (loading()) {
   <div class="h-72 rounded-2xl bg-gray-100 animate-pulse"></div>
   } @else if (error()) {
@@ -37,6 +43,7 @@
   </div>
   } @else {
   <!-- progress dots -->
+  <!-- Feature: @for with class binding per-item based on $index -->
   <div class="flex gap-1.5 mb-6">
     @for (c of cards(); track c.id; let i = $index) {
     <div
@@ -47,6 +54,7 @@
   </div>
 
   <!-- flip card -->
+  <!-- Feature: class binding (.is-flipped) toggled via event binding on click -->
   <div class="flip-scene cursor-pointer" (click)="flip()">
     <div
       class="flip-card"
@@ -85,6 +93,7 @@
   </div>
 
   <!-- controls -->
+  <!-- Feature: event binding + property binding (disabled) driven by component state -->
   <div class="flex items-center justify-between mt-8">
     <button
       (click)="prev()"

@@ -31,6 +31,12 @@ public class FlashCardController {
 
     @PostMapping
     public ResponseEntity<FlashCard> create(@RequestBody FlashCard flashCard) {
+        // Feature: input validation - reject bad JSON content with 400
+        if (flashCard.getQuestion() == null || flashCard.getQuestion().isBlank()
+                || flashCard.getAnswer() == null || flashCard.getAnswer().isBlank()
+                || flashCard.getCategory() == null || flashCard.getCategory().isBlank()) {
+            throw new IllegalArgumentException("Question, answer and category are required.");
+        }
         FlashCard savedCard = repository.save(flashCard);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCard);
     }

@@ -17,6 +17,7 @@ export class ManageComponent implements OnInit {
 
   // ngModel needs a plain mutable object to bind into - keep this one as-is,
   // it's local form state, not something the template reads reactively elsewhere.
+  // Feature: two-way data binding target ([(ngModel)]) for the create form
   newFlashcard: Partial<Flashcard> = {
     question: '',
     answer: '',
@@ -24,6 +25,7 @@ export class ManageComponent implements OnInit {
   };
 
   editingId = signal<number | null>(null);
+  // Feature: two-way data binding target ([(ngModel)]) for the inline edit form
   editFlashcard: Partial<Flashcard> = {
     question: '',
     answer: '',
@@ -45,6 +47,7 @@ export class ManageComponent implements OnInit {
   }
 
   loadFlashcards(): void {
+    // Feature: HTTPClient GET, subscribed asynchronously (RxJS Observable)
     this.flashcardService.getFlashcards().subscribe({
       next: (data) => this.flashcards.set(data),
       error: (error) => console.error('Failed to load flashcards', error),
@@ -71,6 +74,7 @@ export class ManageComponent implements OnInit {
       return;
     }
 
+    // Feature: HTTPClient GET with a path parameter (category)
     this.flashcardService.getByCategory(category).subscribe({
       next: (data) => this.flashcards.set(data),
       error: (error) => console.error('Failed to load category', error),
@@ -97,6 +101,8 @@ export class ManageComponent implements OnInit {
   }
 
   confirmCreateFlashcard(): void {
+    // Feature: form control validation - reject submission and show an error
+    // message when required fields are blank
     if (
       !this.newFlashcard.question?.trim() ||
       !this.newFlashcard.answer?.trim() ||
@@ -114,6 +120,7 @@ export class ManageComponent implements OnInit {
   }
 
   createFlashcard(): void {
+    // Feature: HTTPClient POST
     this.flashcardService.createFlashcard(this.newFlashcard).subscribe({
       next: (created) => {
         this.flashcards.update((list) => [...list, created]);
@@ -146,6 +153,7 @@ export class ManageComponent implements OnInit {
   confirmSaveEdit(): void {
     if (this.editingId() === null) return;
 
+    // Feature: form control validation on the edit form as well
     if (
       !this.editFlashcard.question?.trim() ||
       !this.editFlashcard.answer?.trim() ||
@@ -166,6 +174,7 @@ export class ManageComponent implements OnInit {
     const id = this.editingId();
     if (id === null) return;
 
+    // Feature: HTTPClient PUT
     this.flashcardService.updateFlashcard(id, this.editFlashcard).subscribe({
       next: (updated) => {
         this.flashcards.update((list) => list.map((f) => (f.id === updated.id ? updated : f)));
@@ -180,6 +189,7 @@ export class ManageComponent implements OnInit {
 
   deleteFlashcard(id: number): void {
     this.openConfirm('Delete flashcard', 'Are you sure you want to delete this flashcard?', () => {
+      // Feature: HTTPClient DELETE
       this.flashcardService.deleteFlashcard(id).subscribe({
         next: () => {
           this.flashcards.update((list) =>

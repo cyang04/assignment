@@ -12,6 +12,7 @@ import { FlashcardService } from '../../service/flashcard.service';
 })
 export class CategoryReviewComponent implements OnInit {
   category = '';
+  source = '';
   cards = signal<Flashcard[]>([]);
   index = signal(0);
   flipped = signal(false);
@@ -30,6 +31,12 @@ export class CategoryReviewComponent implements OnInit {
     // Feature: reading a route parameter
     this.category = this.route.snapshot.paramMap.get('category') ?? '';
 
+    // Feature: reading a query parameter, separate from the route parameter above.
+    // Lets this component know how it was reached (e.g. from the home deck list)
+    // without that being part of the route path itself.
+    this.source = this.route.snapshot.queryParamMap.get('from') ?? '';
+
+    // Feature: HTTPClient GET via service, subscribed asynchronously (RxJS Observable)
     this.flashcardService.getByCategory(this.category).subscribe({
       next: (data) => {
         this.cards.set(data);
@@ -61,6 +68,7 @@ export class CategoryReviewComponent implements OnInit {
   }
 
   backToCategories(): void {
+    // Feature: programmatic navigation
     this.router.navigate(['/']);
   }
 }

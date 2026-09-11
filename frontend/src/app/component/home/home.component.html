@@ -13,6 +13,7 @@
     </button>
   </div>
 
+  <!-- Feature: conditional rendering with @if / @else if / @else -->
   @if (loading()) {
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
     @for (i of [1,2,3,4,5,6]; track i) {
@@ -29,22 +30,14 @@
   </div>
   } @else {
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    <!-- Feature: @for rendering child components, using $index loop contextual variable
+         to cycle accent colors -->
     @for (cat of categories(); track cat; let i = $index) {
-    <button
-      (click)="openCategory(cat)"
-      class="text-left rounded-2xl cursor-pointer bg-white border border-gray-200 p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-indigo-200 transition-all"
-    >
-      <div
-        [class]="accentFor(i)"
-        class="w-10 h-10 rounded-xl flex items-center justify-center font-semibold mb-4"
-      >
-        {{ cat.charAt(0).toUpperCase() }}
-      </div>
-
-      <div class="font-medium text-gray-800">
-        {{ cat }}
-      </div>
-    </button>
+    <app-category-card
+      [name]="cat"
+      [accentClass]="accentFor(i)"
+      (select)="openCategory($event)"
+    ></app-category-card>
     }
   </div>
   }

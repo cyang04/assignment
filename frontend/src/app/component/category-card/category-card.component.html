@@ -1,0 +1,18 @@
+<!-- Feature: event binding - click is emitted upward via @Output rather than handled here -->
+<button
+  (click)="onClick()"
+  class="w-full text-left rounded-2xl cursor-pointer bg-white border border-gray-200 p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-indigo-200 transition-all"
+>
+  <!-- Feature: property/class binding driven by an @Input passed down from the parent -->
+  <div
+    [class]="accentClass"
+    class="w-10 h-10 rounded-xl flex items-center justify-center font-semibold mb-4"
+  >
+    {{ name.charAt(0).toUpperCase() }}
+  </div>
+
+  <div class="font-medium text-gray-800">
+    <!-- Feature: interpolation -->
+    {{ name }}
+  </div>
+</button>
