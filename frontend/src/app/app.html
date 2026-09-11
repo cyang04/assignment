@@ -34,15 +34,22 @@
       >
 
       <div class="flex gap-2">
+
+        @if (editError) {
+        <p class="text-red-600 text-sm">
+          {{ editError }}
+        </p>
+        }
+
         <button
-          (click)="saveEdit()"
+          (click)="confirmSaveEdit()"
           class="bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700"
         >
           Save
         </button>
 
         <button
-          (click)="editingId = null"
+          (click)="editingId = null; editError = ''"
           class="bg-gray-500 text-white px-3 py-2 rounded-lg hover:bg-gray-600"
         >
           Cancel
@@ -105,11 +112,51 @@
       class="w-full border rounded-lg px-4 py-2"
     >
 
+    @if (createError) {
+    <p class="text-red-600 text-sm">
+      {{ createError }}
+    </p>
+    }
+
     <button
-      (click)="createFlashcard()"
+      (click)="confirmCreateFlashcard()"
       class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
     >
       Create Flashcard
     </button>
   </div>
 </div>
+
+@if (showConfirm) {
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+>
+  <div class="w-full max-w-md rounded-xl bg-white p-6 shadow-xl">
+
+    <h2 class="text-xl font-bold">
+      {{ confirmTitle }}
+    </h2>
+
+    <p class="mt-2 text-gray-600">
+      {{ confirmMessage }}
+    </p>
+
+    <div class="mt-6 flex justify-end gap-3">
+      <button
+        (click)="closeConfirm()"
+        class="rounded-lg bg-gray-200 px-4 py-2 hover:bg-gray-300"
+      >
+        Cancel
+      </button>
+
+      <button
+        (click)="confirm()"
+        class="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+      >
+        Confirm
+      </button>
+    </div>
+
+  </div>
+</div>
+}
