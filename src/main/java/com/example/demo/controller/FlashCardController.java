@@ -62,4 +62,14 @@ public class FlashCardController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/categories")
+    public List<String> getAllCategories() {
+        return repository.findAllCategories();
+    }
+
+    @GetMapping("/category/{category}")
+    public List<FlashCard> getByCategory(@PathVariable String category) {
+        return repository.findByCategory(category);
+    }
 }
