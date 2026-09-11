@@ -1,0 +1,112 @@
+<main class="max-w-2xl mx-auto px-6 py-12">
+  <div class="mb-8">
+    <button
+      (click)="backToCategories()"
+      class="text-sm cursor-pointer text-gray-500 hover:text-gray-800 transition-colors mb-4"
+    >
+      ← Back to decks
+    </button>
+
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm text-indigo-500 font-medium uppercase tracking-wide">
+          Deck
+        </p>
+        <h1 class="text-2xl font-semibold text-gray-800 capitalize">
+          {{ category }}
+        </h1>
+      </div>
+
+      @if (!loading() && cards().length > 0) {
+      <span class="text-sm text-gray-400">
+        {{ index() + 1 }} / {{ cards().length }}
+      </span>
+      }
+    </div>
+  </div>
+
+  @if (loading()) {
+  <div class="h-72 rounded-2xl bg-gray-100 animate-pulse"></div>
+  } @else if (error()) {
+  <div class="rounded-2xl border border-red-100 bg-red-50 text-red-600 px-5 py-4">
+    Couldn't load this category.
+  </div>
+  } @else if (cards().length === 0) {
+  <div class="rounded-2xl border border-gray-200 border-dashed px-5 py-10 text-center text-gray-400">
+    No cards in this category yet.
+  </div>
+  } @else {
+  <!-- progress dots -->
+  <div class="flex gap-1.5 mb-6">
+    @for (c of cards(); track c.id; let i = $index) {
+    <div
+      [class]="i === index() ? 'bg-indigo-500' : 'bg-gray-200'"
+      class="h-1.5 flex-1 rounded-full transition-colors"
+    ></div>
+    }
+  </div>
+
+  <!-- flip card -->
+  <div class="flip-scene cursor-pointer" (click)="flip()">
+    <div
+      class="flip-card"
+      [class.is-flipped]="flipped()"
+    >
+      <!-- Question -->
+      <div class="flip-face flip-front rounded-3xl border border-gray-200 bg-white p-10 shadow-sm">
+      <span class="text-xs font-medium uppercase tracking-widest text-indigo-500">
+        Question
+      </span>
+
+        <p class="mt-6 text-2xl font-medium leading-relaxed text-gray-800 text-center">
+          {{ currentCard()?.question }}
+        </p>
+
+        <div class="mt-auto pt-10 text-sm text-gray-400">
+          Click to reveal answer
+        </div>
+      </div>
+
+      <!-- Answer -->
+      <div class="flip-face flip-back rounded-3xl bg-indigo-600 p-10 text-white shadow-lg">
+      <span class="text-xs font-medium uppercase tracking-widest text-white/60">
+        Answer
+      </span>
+
+        <p class="mt-6 text-2xl font-medium leading-relaxed text-center">
+          {{ currentCard()?.answer }}
+        </p>
+
+        <div class="mt-auto pt-10 text-sm text-white/50">
+          Click to flip back
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- controls -->
+  <div class="flex items-center justify-between mt-8">
+    <button
+      (click)="prev()"
+      [disabled]="index() === 0"
+      class="flex items-center gap-2 px-4 py-2.5 cursor-pointer rounded-xl border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+    >
+      <span>←</span>
+      Previous
+    </button>
+
+    <span class="text-xs text-gray-400">
+    Click the card to flip
+  </span>
+
+    <button
+      (click)="next()"
+      [disabled]="index() === cards().length - 1"
+      class="flex items-center gap-2 px-5 py-2.5 rounded-xl cursor-pointer bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+    >
+      Next
+      <span>→</span>
+    </button>
+  </div>
+  }
+</main>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Flashcard } from '../model/flashcard';
+import {map, Observable} from 'rxjs';
+import {CategorySummary, Flashcard} from '../model/flashcard.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +26,13 @@ export class FlashcardService {
 
   deleteFlashcard(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  getCategories(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}/categories`);
+  }
+
+  getByCategory(category: string): Observable<Flashcard[]> {
+    return this.http.get<Flashcard[]>(`${this.apiUrl}/category/${category}`);
   }
 }

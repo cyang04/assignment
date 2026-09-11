@@ -7,3 +7,8 @@ export interface Flashcard {
   lastAnsweredAt: string | null;
   lastAnsweredStatus: 'CORRECT' | 'PARTIAL' | 'WRONG' | null;
 }
+
+export interface CategorySummary {
+  name: string;
+  count: number;
+}
